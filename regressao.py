@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 # Tarefa de Regressão
 
 # Configuração padrão dos plots
-def get_plot_configuration(file, n_figure):
+def get_plot_configuration(file, n_figure, title):
     fig = plt.figure(n_figure)
     plot = fig.add_subplot(projection='3d')
 
@@ -19,14 +19,17 @@ def get_plot_configuration(file, n_figure):
     plot.set_xlabel("Temperatura")
     plot.set_ylabel("pH da solução")
     plot.set_zlabel("Nível de Atividade Enzimática")
-    plot.set_title("Atividade Enzimática")
+    plot.set_title(title)
 
     return plot
+
+figure_index = 1
 
 # 1.
 atividade_enzimatica = np.loadtxt("atividade_enzimatica.csv", delimiter=",")
 
-plot_1 = get_plot_configuration(atividade_enzimatica, 1)
+plot_1 = get_plot_configuration(atividade_enzimatica, figure_index, "Atividade Enzimática")
+figure_index+=1
 
 # 2.
 X = atividade_enzimatica[:,:2]
@@ -41,7 +44,8 @@ y_axis = np.linspace(-9, 9, n_linspace)
 X3d, Y3d = np.meshgrid(x_axis, y_axis)
 
 # MQO Tradicional
-plot_MQO_tradicional = get_plot_configuration(atividade_enzimatica, 2)
+plot_MQO_tradicional = get_plot_configuration(atividade_enzimatica, figure_index, "Atividade Enzimática - MQO Tradicional")
+figure_index+=1
 
 X_MQO_tradicional = np.hstack((
     np.ones((X.shape[0], 1)), X
@@ -57,15 +61,18 @@ X_MQO_regularizado = np.hstack((
     np.ones((X.shape[0], 1)), X
 ))
 
-# lambdas_MQO_regularizado = [0, 0.25, 0.5, 0.75, 1]
+lambdas_MQO_regularizado = [0, 0.25, 0.5, 0.75, 1]
 
-# for i, lambda_MQO_regularizado in enumerate(lambdas_MQO_regularizado):
-#     plot_MQO_regularizado = get_plot_configuration(atividade_enzimatica, (4+i))
-#     B_MQO_regularizado = np.linalg.pinv(X_MQO_tradicional.T@X_MQO_tradicional + lambda_MQO_regularizado[i]@np.identity)@X_MQO_tradicional.T@y
-#     Z_MQO_regularizado = B_MQO_regularizado[0] + B_MQO_regularizado[1]*X3d + B_MQO_regularizado[2]*Y3d
+for lambda_MQO_regularizado in lambdas_MQO_regularizado:
+    plot_MQO_regularizado = get_plot_configuration(atividade_enzimatica, (figure_index), f"Atividade Enzimática - MQO Regularizado λ: {lambda_MQO_regularizado}")
+    figure_index+=1
+    B_MQO_regularizado = np.linalg.pinv(X_MQO_tradicional.T@X_MQO_tradicional + lambda_MQO_regularizado*np.identity(X_MQO_regularizado.shape[1]))@X_MQO_regularizado.T@y
+    Z_MQO_regularizado = B_MQO_regularizado[0] + B_MQO_regularizado[1]*X3d + B_MQO_regularizado[2]*Y3d
+    plot_MQO_regularizado.plot_surface(X3d, Y3d, Z_MQO_regularizado, cmap='gray')
 
 # Média
-plot_media = get_plot_configuration(atividade_enzimatica, 3)
+plot_media = get_plot_configuration(atividade_enzimatica, figure_index, "Atividade Enzimática - Média")
+figure_index+=1
 media = np.mean(y)
 
 B_media = [
