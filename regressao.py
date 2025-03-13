@@ -28,7 +28,7 @@ def get_plot_configuration(file, n_figure, title):
 figure_index = 1
 
 # 1.
-atividade_enzimatica = np.loadtxt("atividade_enzimatica.csv", delimiter=",")
+atividade_enzimatica = np.loadtxt("datasets\\atividade_enzimatica.csv", delimiter=",")
 
 N, p = atividade_enzimatica.shape[0], atividade_enzimatica.shape[1] - 1 # Removendo y
 
@@ -69,7 +69,7 @@ X_MQO_regularizado = np.hstack((
 lambdas_MQO_regularizado = [0, 0.25, 0.5, 0.75, 1]
 
 for lambda_MQO_regularizado in lambdas_MQO_regularizado:
-    plot_MQO_regularizado = get_plot_configuration(atividade_enzimatica, (figure_index), f"Atividade Enzimática - MQO Regularizado λ: {lambda_MQO_regularizado}")
+    plot_MQO_regularizado = get_plot_configuration(atividade_enzimatica, figure_index, f"Atividade Enzimática - MQO Regularizado λ: {lambda_MQO_regularizado}")
     figure_index+=1
     B_MQO_regularizado = np.linalg.pinv(X_MQO_regularizado.T@X_MQO_regularizado + lambda_MQO_regularizado*np.identity(X_MQO_regularizado.shape[1]))@X_MQO_regularizado.T@y
     Z_MQO_regularizado = B_MQO_regularizado[0] + B_MQO_regularizado[1]*X3d + B_MQO_regularizado[2]*Y3d
