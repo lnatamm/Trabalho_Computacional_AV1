@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-plot_graphs = False
+plot_graphs = True
 
 # Tarefa de Regressão
 
@@ -90,9 +90,6 @@ Z_media = B_media[0] + B_media[1]*X3d + B_media[2]*Y3d
 
 plot_media.plot_surface(X3d, Y3d, Z_media, cmap='gray')
 
-if plot_graphs:
-    plt.show()
-
 # 5.
 
 # Simulações por Monte Carlo
@@ -157,46 +154,154 @@ for rodada in range(rodadas):
 # 6.
 
 # Média da variável dependente
+metricas_media = {
+    'media': np.mean(desempenhos_media),
+    'desvio_padrao': np.std(desempenhos_media),
+    'maximo': np.max(desempenhos_media),
+    'minimo': np.min(desempenhos_media)
+}
 print("Média da variável dependente:")
-print(f"Média: {np.mean(desempenhos_media)}")
-print(f"Desvio Padrão: {np.std(desempenhos_media)}")
-print(f"Valor máximo: {np.max(desempenhos_media)}")
-print(f"Valor mínimo: {np.min(desempenhos_media)}")
+print(f"Média: {metricas_media['media']}")
+print(f"Desvio Padrão: {metricas_media['desvio_padrao']}")
+print(f"Valor máximo: {metricas_media['maximo']}")
+print(f"Valor mínimo: {metricas_media['minimo']}")
 print("-------------------------------")
 
+metricas_MQO_tradicional = {
+    'media': np.mean(desempenhos_MQO_tradicional),
+    'desvio_padrao': np.std(desempenhos_MQO_tradicional),
+    'maximo': np.max(desempenhos_MQO_tradicional),
+    'minimo': np.min(desempenhos_MQO_tradicional)
+}
 print("MQO tradicional:")
-print(f"Média: {np.mean(desempenhos_MQO_tradicional)}")
-print(f"Desvio Padrão: {np.std(desempenhos_MQO_tradicional)}")
-print(f"Valor máximo: {np.max(desempenhos_MQO_tradicional)}")
-print(f"Valor mínimo: {np.min(desempenhos_MQO_tradicional)}")
+print(f"Média: {metricas_MQO_tradicional['media']}")
+print(f"Desvio Padrão: {metricas_MQO_tradicional['desvio_padrao']}")
+print(f"Valor máximo: {metricas_MQO_tradicional['maximo']}")
+print(f"Valor mínimo: {metricas_MQO_tradicional['minimo']}")
 print("-------------------------------")
 
 
 desempenhos_MQO_regularizado = np.array(desempenhos_MQO_regularizado)
+
+metricas_MQO_regularizado_025 = {
+    'media': np.mean(desempenhos_MQO_regularizado[:,1]),
+    'desvio_padrao': np.std(desempenhos_MQO_regularizado[:,1]),
+    'maximo': np.max(desempenhos_MQO_regularizado[:,1]),
+    'minimo': np.min(desempenhos_MQO_regularizado[:,1])
+}
 print("MQO regularizado (0,25):")
-print(f"Média: {np.mean(desempenhos_MQO_regularizado[:,1])}")
-print(f"Desvio Padrão: {np.std(desempenhos_MQO_regularizado[:,1])}")
-print(f"Valor máximo: {np.max(desempenhos_MQO_regularizado[:,1])}")
-print(f"Valor mínimo: {np.min(desempenhos_MQO_regularizado[:,1])}")
+print(f"Média: {metricas_MQO_regularizado_025['media']}")
+print(f"Desvio Padrão: {metricas_MQO_regularizado_025['desvio_padrao']}")
+print(f"Valor máximo: {metricas_MQO_regularizado_025['maximo']}")
+print(f"Valor mínimo: {metricas_MQO_regularizado_025['minimo']}")
 print("-------------------------------")
 
+metricas_MQO_regularizado_050 = {
+    'media': np.mean(desempenhos_MQO_regularizado[:,2]),
+    'desvio_padrao': np.std(desempenhos_MQO_regularizado[:,2]),
+    'maximo': np.max(desempenhos_MQO_regularizado[:,2]),
+    'minimo': np.min(desempenhos_MQO_regularizado[:,2])
+}
 print("MQO regularizado (0,5):")
-print(f"Média: {np.mean(desempenhos_MQO_regularizado[:,2])}")
-print(f"Desvio Padrão: {np.std(desempenhos_MQO_regularizado[:,2])}")
-print(f"Valor máximo: {np.max(desempenhos_MQO_regularizado[:,2])}")
-print(f"Valor mínimo: {np.min(desempenhos_MQO_regularizado[:,2])}")
+print(f"Média: {metricas_MQO_regularizado_050['media']}")
+print(f"Desvio Padrão: {metricas_MQO_regularizado_050['desvio_padrao']}")
+print(f"Valor máximo: {metricas_MQO_regularizado_050['maximo']}")
+print(f"Valor mínimo: {metricas_MQO_regularizado_050['minimo']}")
 print("-------------------------------")
 
+metricas_MQO_regularizado_075 = {
+    'media': np.mean(desempenhos_MQO_regularizado[:,3]),
+    'desvio_padrao': np.std(desempenhos_MQO_regularizado[:,3]),
+    'maximo': np.max(desempenhos_MQO_regularizado[:,3]),
+    'minimo': np.min(desempenhos_MQO_regularizado[:,3])
+}
 print("MQO regularizado (0,75):")
-print(f"Média: {np.mean(desempenhos_MQO_regularizado[:,3])}")
-print(f"Desvio Padrão: {np.std(desempenhos_MQO_regularizado[:,3])}")
-print(f"Valor máximo: {np.max(desempenhos_MQO_regularizado[:,3])}")
-print(f"Valor mínimo: {np.min(desempenhos_MQO_regularizado[:,3])}")
+print(f"Média: {metricas_MQO_regularizado_075['media']}")
+print(f"Desvio Padrão: {metricas_MQO_regularizado_075['desvio_padrao']}")
+print(f"Valor máximo: {metricas_MQO_regularizado_075['maximo']}")
+print(f"Valor mínimo: {metricas_MQO_regularizado_075['minimo']}")
 print("-------------------------------")
 
+metricas_MQO_regularizado_100 = {
+    'media': np.mean(desempenhos_MQO_regularizado[:,4]),
+    'desvio_padrao': np.std(desempenhos_MQO_regularizado[:,4]),
+    'maximo': np.max(desempenhos_MQO_regularizado[:,4]),
+    'minimo': np.min(desempenhos_MQO_regularizado[:,4])
+}
 print("MQO regularizado (1):")
-print(f"Média: {np.mean(desempenhos_MQO_regularizado[:,4])}")
-print(f"Desvio Padrão: {np.std(desempenhos_MQO_regularizado[:,4])}")
-print(f"Valor máximo: {np.max(desempenhos_MQO_regularizado[:,4])}")
-print(f"Valor mínimo: {np.min(desempenhos_MQO_regularizado[:,4])}")
+print(f"Média: {metricas_MQO_regularizado_100['media']}")
+print(f"Desvio Padrão: {metricas_MQO_regularizado_100['desvio_padrao']}")
+print(f"Valor máximo: {metricas_MQO_regularizado_100['maximo']}")
+print(f"Valor mínimo: {metricas_MQO_regularizado_100['minimo']}")
 print("-------------------------------")
+
+plt.figure(figure_index-1)
+
+modelos = (
+    "Média da variável dependente",
+    "MQO tradicional",
+    "MQO regularizado (0,25)",
+    "MQO regularizado (0,5)",
+    "MQO regularizado (0,75)",
+    "MQO regularizado (1)"
+)
+
+metricas = {
+    'Média': 
+        (
+            metricas_media['media'],
+            metricas_MQO_tradicional['media'],
+            metricas_MQO_regularizado_025['media'],
+            metricas_MQO_regularizado_050['media'],
+            metricas_MQO_regularizado_075['media'],
+            metricas_MQO_regularizado_100['media']
+        ),
+    'Desvio Padrão': 
+        (
+            metricas_media['desvio_padrao'],
+            metricas_MQO_tradicional['desvio_padrao'],
+            metricas_MQO_regularizado_025['desvio_padrao'],
+            metricas_MQO_regularizado_050['desvio_padrao'],
+            metricas_MQO_regularizado_075['desvio_padrao'],
+            metricas_MQO_regularizado_100['desvio_padrao']
+        ),
+    'Valor máximo': 
+        (
+            metricas_media['maximo'],
+            metricas_MQO_tradicional['maximo'],
+            metricas_MQO_regularizado_025['maximo'],
+            metricas_MQO_regularizado_050['maximo'],
+            metricas_MQO_regularizado_075['maximo'],
+            metricas_MQO_regularizado_100['maximo']
+        ),
+    'Valor mínimo': 
+        (
+            metricas_media['minimo'],
+            metricas_MQO_tradicional['minimo'],
+            metricas_MQO_regularizado_025['minimo'],
+            metricas_MQO_regularizado_050['minimo'],
+            metricas_MQO_regularizado_075['minimo'],
+            metricas_MQO_regularizado_100['minimo']
+        ),
+}
+
+x = np.arange(len(modelos))  # the label locations
+largura = 0.2  # the width of the bars
+mult = 0
+
+fig, ax = plt.subplots(layout='constrained')
+
+for tipo, medida in metricas.items():
+    offset = largura * mult
+    rects = ax.bar(x + offset, medida, largura, label=tipo)
+    ax.bar_label(rects, padding=3)
+    mult += 1
+
+ax.set_title('Métricas dos modelos')
+ax.set_xticks(x + largura, modelos)
+ax.legend(loc='upper left', ncols=3)
+ax.set_ylim(0, 40)
+
+
+if plot_graphs:
+    plt.show()
