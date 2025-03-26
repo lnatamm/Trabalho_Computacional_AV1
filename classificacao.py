@@ -191,11 +191,11 @@ def acuracia_Gauss(X, y, medias, matrizes_de_covariancia, matrizes_de_covarianci
 figure_index = 1
 
 def fdp(x, mu, sigma, sigma_inv):
-    p = len(mu)  # Dimensão dos dados
-    coef = 1 / ((2 * np.pi) ** (p / 2) * np.linalg.det(sigma) ** 0.5)
-    exp_term = np.exp(-0.5 * (x - mu).T @ sigma_inv @ (x - mu))
+    p = len(mu)  # Dimensão do vetor
+    coef = -0.5 * (p * np.log(2 * np.pi) + np.log(np.linalg.det(sigma)))
+    quad_form = -0.5 * (x - mu).T @ sigma_inv @ (x - mu)
     
-    return coef * exp_term
+    return coef + quad_form
 
 def funcao_discriminante_cov_igual(x, mu, sigma_inv):
     return (x - mu).T@sigma_inv@ (x - mu)
@@ -313,11 +313,11 @@ index_plot += 1
 lambdas = [0.25, 0.50, 0.75]
 
 matrizes_de_covariancia_025 = [
-    ((1 - lambdas[0]) * len(EMGs[:2,EMGs[-1,:] == classes[0]]) + (lambdas[0] * len(y_Gauss) * matriz_de_covariancia_agregada)) / (((1 - lambdas[0]) * len(EMGs[:2,EMGs[-1,:] == classes[0]])) + (lambdas[0] * len(y_Gauss))),
-    ((1 - lambdas[0]) * len(EMGs[:2,EMGs[-1,:] == classes[1]]) + (lambdas[0] * len(y_Gauss) * matriz_de_covariancia_agregada)) / (((1 - lambdas[0]) * len(EMGs[:2,EMGs[-1,:] == classes[1]])) + (lambdas[0] * len(y_Gauss))),
-    ((1 - lambdas[0]) * len(EMGs[:2,EMGs[-1,:] == classes[2]]) + (lambdas[0] * len(y_Gauss) * matriz_de_covariancia_agregada)) / (((1 - lambdas[0]) * len(EMGs[:2,EMGs[-1,:] == classes[2]])) + (lambdas[0] * len(y_Gauss))),
-    ((1 - lambdas[0]) * len(EMGs[:2,EMGs[-1,:] == classes[3]]) + (lambdas[0] * len(y_Gauss) * matriz_de_covariancia_agregada)) / (((1 - lambdas[0]) * len(EMGs[:2,EMGs[-1,:] == classes[3]])) + (lambdas[0] * len(y_Gauss))),
-    ((1 - lambdas[0]) * len(EMGs[:2,EMGs[-1,:] == classes[4]]) + (lambdas[0] * len(y_Gauss) * matriz_de_covariancia_agregada)) / (((1 - lambdas[0]) * len(EMGs[:2,EMGs[-1,:] == classes[4]])) + (lambdas[0] * len(y_Gauss))),
+        (np.dot((1 - lambdas[0]), np.dot(len(EMGs[:2,EMGs[-1,:] == classes[0]]), matrizes_de_covariancia[0])) + (np.dot((lambdas[0] * len(y_Gauss)), matriz_de_covariancia_agregada))) / (((1 - lambdas[0]) * len(EMGs[:2,EMGs[-1,:] == classes[0]])) + (lambdas[0] * len(y_Gauss))),
+        (np.dot((1 - lambdas[0]), np.dot(len(EMGs[:2,EMGs[-1,:] == classes[1]]), matrizes_de_covariancia[1])) + (np.dot((lambdas[0] * len(y_Gauss)), matriz_de_covariancia_agregada))) / (((1 - lambdas[0]) * len(EMGs[:2,EMGs[-1,:] == classes[1]])) + (lambdas[0] * len(y_Gauss))),
+        (np.dot((1 - lambdas[0]), np.dot(len(EMGs[:2,EMGs[-1,:] == classes[2]]), matrizes_de_covariancia[2])) + (np.dot((lambdas[0] * len(y_Gauss)), matriz_de_covariancia_agregada))) / (((1 - lambdas[0]) * len(EMGs[:2,EMGs[-1,:] == classes[2]])) + (lambdas[0] * len(y_Gauss))),
+        (np.dot((1 - lambdas[0]), np.dot(len(EMGs[:2,EMGs[-1,:] == classes[3]]), matrizes_de_covariancia[3])) + (np.dot((lambdas[0] * len(y_Gauss)), matriz_de_covariancia_agregada))) / (((1 - lambdas[0]) * len(EMGs[:2,EMGs[-1,:] == classes[3]])) + (lambdas[0] * len(y_Gauss))),
+        (np.dot((1 - lambdas[0]), np.dot(len(EMGs[:2,EMGs[-1,:] == classes[4]]), matrizes_de_covariancia[4])) + (np.dot((lambdas[0] * len(y_Gauss)), matriz_de_covariancia_agregada))) / (((1 - lambdas[0]) * len(EMGs[:2,EMGs[-1,:] == classes[4]])) + (lambdas[0] * len(y_Gauss))),
 ]
 matrizes_de_covariancia_025_inversas = [
     np.linalg.pinv(matrizes_de_covariancia_025[0]),
@@ -332,11 +332,11 @@ plot = plot_frontier_Gauss_friedman(plot, medias, matrizes_de_covariancia_025, m
 index_plot += 1
 
 matrizes_de_covariancia_050 = [
-    ((1 - lambdas[1]) * len(EMGs[:2,EMGs[-1,:] == classes[0]]) + (lambdas[1] * len(y_Gauss) * matriz_de_covariancia_agregada)) / (((1 - lambdas[1]) * len(EMGs[:2,EMGs[-1,:] == classes[0]])) + (lambdas[1] * len(y_Gauss))),
-    ((1 - lambdas[1]) * len(EMGs[:2,EMGs[-1,:] == classes[1]]) + (lambdas[1] * len(y_Gauss) * matriz_de_covariancia_agregada)) / (((1 - lambdas[1]) * len(EMGs[:2,EMGs[-1,:] == classes[1]])) + (lambdas[1] * len(y_Gauss))),
-    ((1 - lambdas[1]) * len(EMGs[:2,EMGs[-1,:] == classes[2]]) + (lambdas[1] * len(y_Gauss) * matriz_de_covariancia_agregada)) / (((1 - lambdas[1]) * len(EMGs[:2,EMGs[-1,:] == classes[2]])) + (lambdas[1] * len(y_Gauss))),
-    ((1 - lambdas[1]) * len(EMGs[:2,EMGs[-1,:] == classes[3]]) + (lambdas[1] * len(y_Gauss) * matriz_de_covariancia_agregada)) / (((1 - lambdas[1]) * len(EMGs[:2,EMGs[-1,:] == classes[3]])) + (lambdas[1] * len(y_Gauss))),
-    ((1 - lambdas[1]) * len(EMGs[:2,EMGs[-1,:] == classes[4]]) + (lambdas[1] * len(y_Gauss) * matriz_de_covariancia_agregada)) / (((1 - lambdas[1]) * len(EMGs[:2,EMGs[-1,:] == classes[4]])) + (lambdas[1] * len(y_Gauss))),
+        (np.dot((1 - lambdas[1]), np.dot(len(EMGs[:2,EMGs[-1,:] == classes[0]]), matrizes_de_covariancia[0])) + (np.dot((lambdas[1] * len(y_Gauss)), matriz_de_covariancia_agregada))) / (((1 - lambdas[2]) * len(EMGs[:2,EMGs[-1,:] == classes[0]])) + (lambdas[1] * len(y_Gauss))),
+        (np.dot((1 - lambdas[1]), np.dot(len(EMGs[:2,EMGs[-1,:] == classes[1]]), matrizes_de_covariancia[1])) + (np.dot((lambdas[1] * len(y_Gauss)), matriz_de_covariancia_agregada))) / (((1 - lambdas[2]) * len(EMGs[:2,EMGs[-1,:] == classes[1]])) + (lambdas[1] * len(y_Gauss))),
+        (np.dot((1 - lambdas[1]), np.dot(len(EMGs[:2,EMGs[-1,:] == classes[2]]), matrizes_de_covariancia[2])) + (np.dot((lambdas[1] * len(y_Gauss)), matriz_de_covariancia_agregada))) / (((1 - lambdas[2]) * len(EMGs[:2,EMGs[-1,:] == classes[2]])) + (lambdas[1] * len(y_Gauss))),
+        (np.dot((1 - lambdas[1]), np.dot(len(EMGs[:2,EMGs[-1,:] == classes[3]]), matrizes_de_covariancia[3])) + (np.dot((lambdas[1] * len(y_Gauss)), matriz_de_covariancia_agregada))) / (((1 - lambdas[2]) * len(EMGs[:2,EMGs[-1,:] == classes[3]])) + (lambdas[1] * len(y_Gauss))),
+        (np.dot((1 - lambdas[1]), np.dot(len(EMGs[:2,EMGs[-1,:] == classes[4]]), matrizes_de_covariancia[4])) + (np.dot((lambdas[1] * len(y_Gauss)), matriz_de_covariancia_agregada))) / (((1 - lambdas[2]) * len(EMGs[:2,EMGs[-1,:] == classes[4]])) + (lambdas[1] * len(y_Gauss))),
 ]
 matrizes_de_covariancia_050_inversas = [
     np.linalg.pinv(matrizes_de_covariancia_050[0]),
@@ -351,11 +351,11 @@ plot = plot_frontier_Gauss_friedman(plot, medias, matrizes_de_covariancia_050, m
 index_plot += 1
 
 matrizes_de_covariancia_075 = [
-    ((1 - lambdas[2]) * len(EMGs[:2,EMGs[-1,:] == classes[0]]) + (lambdas[2] * len(y_Gauss) * matriz_de_covariancia_agregada)) / (((1 - lambdas[2]) * len(EMGs[:2,EMGs[-1,:] == classes[0]])) + (lambdas[2] * len(y_Gauss))),
-    ((1 - lambdas[2]) * len(EMGs[:2,EMGs[-1,:] == classes[1]]) + (lambdas[2] * len(y_Gauss) * matriz_de_covariancia_agregada)) / (((1 - lambdas[2]) * len(EMGs[:2,EMGs[-1,:] == classes[1]])) + (lambdas[2] * len(y_Gauss))),
-    ((1 - lambdas[2]) * len(EMGs[:2,EMGs[-1,:] == classes[2]]) + (lambdas[2] * len(y_Gauss) * matriz_de_covariancia_agregada)) / (((1 - lambdas[2]) * len(EMGs[:2,EMGs[-1,:] == classes[2]])) + (lambdas[2] * len(y_Gauss))),
-    ((1 - lambdas[2]) * len(EMGs[:2,EMGs[-1,:] == classes[3]]) + (lambdas[2] * len(y_Gauss) * matriz_de_covariancia_agregada)) / (((1 - lambdas[2]) * len(EMGs[:2,EMGs[-1,:] == classes[3]])) + (lambdas[2] * len(y_Gauss))),
-    ((1 - lambdas[2]) * len(EMGs[:2,EMGs[-1,:] == classes[4]]) + (lambdas[2] * len(y_Gauss) * matriz_de_covariancia_agregada)) / (((1 - lambdas[2]) * len(EMGs[:2,EMGs[-1,:] == classes[4]])) + (lambdas[2] * len(y_Gauss))),
+        (np.dot((1 - lambdas[2]), np.dot(len(EMGs[:2,EMGs[-1,:] == classes[0]]), matrizes_de_covariancia[0])) + (np.dot((lambdas[2] * len(y_Gauss)), matriz_de_covariancia_agregada))) / (((1 - lambdas[2]) * len(EMGs[:2,EMGs[-1,:] == classes[0]])) + (lambdas[2] * len(y_Gauss))),
+        (np.dot((1 - lambdas[2]), np.dot(len(EMGs[:2,EMGs[-1,:] == classes[1]]), matrizes_de_covariancia[1])) + (np.dot((lambdas[2] * len(y_Gauss)), matriz_de_covariancia_agregada))) / (((1 - lambdas[2]) * len(EMGs[:2,EMGs[-1,:] == classes[1]])) + (lambdas[2] * len(y_Gauss))),
+        (np.dot((1 - lambdas[2]), np.dot(len(EMGs[:2,EMGs[-1,:] == classes[2]]), matrizes_de_covariancia[2])) + (np.dot((lambdas[2] * len(y_Gauss)), matriz_de_covariancia_agregada))) / (((1 - lambdas[2]) * len(EMGs[:2,EMGs[-1,:] == classes[2]])) + (lambdas[2] * len(y_Gauss))),
+        (np.dot((1 - lambdas[2]), np.dot(len(EMGs[:2,EMGs[-1,:] == classes[3]]), matrizes_de_covariancia[3])) + (np.dot((lambdas[2] * len(y_Gauss)), matriz_de_covariancia_agregada))) / (((1 - lambdas[2]) * len(EMGs[:2,EMGs[-1,:] == classes[3]])) + (lambdas[2] * len(y_Gauss))),
+        (np.dot((1 - lambdas[2]), np.dot(len(EMGs[:2,EMGs[-1,:] == classes[4]]), matrizes_de_covariancia[4])) + (np.dot((lambdas[2] * len(y_Gauss)), matriz_de_covariancia_agregada))) / (((1 - lambdas[2]) * len(EMGs[:2,EMGs[-1,:] == classes[4]])) + (lambdas[2] * len(y_Gauss))),
 ]
 matrizes_de_covariancia_075_inversas = [
     np.linalg.pinv(matrizes_de_covariancia_075[0]),
@@ -503,12 +503,20 @@ for rodada in range(rodadas):
     # Gaussiano Bayesiano Friedman
     lambdas = [0.25, 0.50, 0.75]
 
+    matrizes_de_covariancia = np.array([
+        np.cov(dados_classes[0]),
+        np.cov(dados_classes[1]),
+        np.cov(dados_classes[2]),
+        np.cov(dados_classes[3]),
+        np.cov(dados_classes[4]),
+    ])
+
     matrizes_de_covariancia_025 = [
-        (np.dot((1 - lambdas[0]), len(dados_treino[:2,dados_treino[-1,:] == classes[0]])) + (np.dot((lambdas[0] * len(y_treino_Gauss)), matriz_de_covariancia_agregada))) / (((1 - lambdas[0]) * len(dados_treino[:2,dados_treino[-1,:] == classes[0]])) + (lambdas[0] * len(y_treino_Gauss))),
-        (np.dot((1 - lambdas[0]), len(dados_treino[:2,dados_treino[-1,:] == classes[1]])) + (np.dot((lambdas[0] * len(y_treino_Gauss)), matriz_de_covariancia_agregada))) / (((1 - lambdas[0]) * len(dados_treino[:2,dados_treino[-1,:] == classes[1]])) + (lambdas[0] * len(y_treino_Gauss))),
-        (np.dot((1 - lambdas[0]), len(dados_treino[:2,dados_treino[-1,:] == classes[2]])) + (np.dot((lambdas[0] * len(y_treino_Gauss)), matriz_de_covariancia_agregada))) / (((1 - lambdas[0]) * len(dados_treino[:2,dados_treino[-1,:] == classes[2]])) + (lambdas[0] * len(y_treino_Gauss))),
-        (np.dot((1 - lambdas[0]), len(dados_treino[:2,dados_treino[-1,:] == classes[3]])) + (np.dot((lambdas[0] * len(y_treino_Gauss)), matriz_de_covariancia_agregada))) / (((1 - lambdas[0]) * len(dados_treino[:2,dados_treino[-1,:] == classes[3]])) + (lambdas[0] * len(y_treino_Gauss))),
-        (np.dot((1 - lambdas[0]), len(dados_treino[:2,dados_treino[-1,:] == classes[4]])) + (np.dot((lambdas[0] * len(y_treino_Gauss)), matriz_de_covariancia_agregada))) / (((1 - lambdas[0]) * len(dados_treino[:2,dados_treino[-1,:] == classes[4]])) + (lambdas[0] * len(y_treino_Gauss))),
+        (np.dot((1 - lambdas[0]), np.dot(len(dados_treino[:2,dados_treino[-1,:] == classes[0]]), matrizes_de_covariancia[0])) + (np.dot((lambdas[0] * len(y_treino_Gauss)), matriz_de_covariancia_agregada))) / (((1 - lambdas[0]) * len(dados_treino[:2,dados_treino[-1,:] == classes[0]])) + (lambdas[0] * len(y_treino_Gauss))),
+        (np.dot((1 - lambdas[0]), np.dot(len(dados_treino[:2,dados_treino[-1,:] == classes[1]]), matrizes_de_covariancia[1])) + (np.dot((lambdas[0] * len(y_treino_Gauss)), matriz_de_covariancia_agregada))) / (((1 - lambdas[0]) * len(dados_treino[:2,dados_treino[-1,:] == classes[1]])) + (lambdas[0] * len(y_treino_Gauss))),
+        (np.dot((1 - lambdas[0]), np.dot(len(dados_treino[:2,dados_treino[-1,:] == classes[2]]), matrizes_de_covariancia[2])) + (np.dot((lambdas[0] * len(y_treino_Gauss)), matriz_de_covariancia_agregada))) / (((1 - lambdas[0]) * len(dados_treino[:2,dados_treino[-1,:] == classes[2]])) + (lambdas[0] * len(y_treino_Gauss))),
+        (np.dot((1 - lambdas[0]), np.dot(len(dados_treino[:2,dados_treino[-1,:] == classes[3]]), matrizes_de_covariancia[3])) + (np.dot((lambdas[0] * len(y_treino_Gauss)), matriz_de_covariancia_agregada))) / (((1 - lambdas[0]) * len(dados_treino[:2,dados_treino[-1,:] == classes[3]])) + (lambdas[0] * len(y_treino_Gauss))),
+        (np.dot((1 - lambdas[0]), np.dot(len(dados_treino[:2,dados_treino[-1,:] == classes[4]]), matrizes_de_covariancia[4])) + (np.dot((lambdas[0] * len(y_treino_Gauss)), matriz_de_covariancia_agregada))) / (((1 - lambdas[0]) * len(dados_treino[:2,dados_treino[-1,:] == classes[4]])) + (lambdas[0] * len(y_treino_Gauss))),
     ]
     matrizes_de_covariancia_025_inversas = [
         np.linalg.pinv(matrizes_de_covariancia_025[0]),
@@ -519,11 +527,11 @@ for rodada in range(rodadas):
     ]
 
     matrizes_de_covariancia_050 = [
-        (np.dot((1 - lambdas[1]), len(dados_treino[:2,dados_treino[-1,:] == classes[0]])) + (np.dot((lambdas[1] * len(y_treino_Gauss)), matriz_de_covariancia_agregada))) / (((1 - lambdas[1]) * len(dados_treino[:2,dados_treino[-1,:] == classes[0]])) + (lambdas[1] * len(y_treino_Gauss))),
-        (np.dot((1 - lambdas[1]), len(dados_treino[:2,dados_treino[-1,:] == classes[1]])) + (np.dot((lambdas[1] * len(y_treino_Gauss)), matriz_de_covariancia_agregada))) / (((1 - lambdas[1]) * len(dados_treino[:2,dados_treino[-1,:] == classes[1]])) + (lambdas[1] * len(y_treino_Gauss))),
-        (np.dot((1 - lambdas[1]), len(dados_treino[:2,dados_treino[-1,:] == classes[2]])) + (np.dot((lambdas[1] * len(y_treino_Gauss)), matriz_de_covariancia_agregada))) / (((1 - lambdas[1]) * len(dados_treino[:2,dados_treino[-1,:] == classes[2]])) + (lambdas[1] * len(y_treino_Gauss))),
-        (np.dot((1 - lambdas[1]), len(dados_treino[:2,dados_treino[-1,:] == classes[3]])) + (np.dot((lambdas[1] * len(y_treino_Gauss)), matriz_de_covariancia_agregada))) / (((1 - lambdas[1]) * len(dados_treino[:2,dados_treino[-1,:] == classes[3]])) + (lambdas[1] * len(y_treino_Gauss))),
-        (np.dot((1 - lambdas[1]), len(dados_treino[:2,dados_treino[-1,:] == classes[4]])) + (np.dot((lambdas[1] * len(y_treino_Gauss)), matriz_de_covariancia_agregada))) / (((1 - lambdas[1]) * len(dados_treino[:2,dados_treino[-1,:] == classes[4]])) + (lambdas[1] * len(y_treino_Gauss))),
+        (np.dot((1 - lambdas[1]), np.dot(len(dados_treino[:2,dados_treino[-1,:] == classes[0]]), matrizes_de_covariancia[0])) + (np.dot((lambdas[1] * len(y_treino_Gauss)), matriz_de_covariancia_agregada))) / (((1 - lambdas[2]) * len(dados_treino[:2,dados_treino[-1,:] == classes[0]])) + (lambdas[1] * len(y_treino_Gauss))),
+        (np.dot((1 - lambdas[1]), np.dot(len(dados_treino[:2,dados_treino[-1,:] == classes[1]]), matrizes_de_covariancia[1])) + (np.dot((lambdas[1] * len(y_treino_Gauss)), matriz_de_covariancia_agregada))) / (((1 - lambdas[2]) * len(dados_treino[:2,dados_treino[-1,:] == classes[1]])) + (lambdas[1] * len(y_treino_Gauss))),
+        (np.dot((1 - lambdas[1]), np.dot(len(dados_treino[:2,dados_treino[-1,:] == classes[2]]), matrizes_de_covariancia[2])) + (np.dot((lambdas[1] * len(y_treino_Gauss)), matriz_de_covariancia_agregada))) / (((1 - lambdas[2]) * len(dados_treino[:2,dados_treino[-1,:] == classes[2]])) + (lambdas[1] * len(y_treino_Gauss))),
+        (np.dot((1 - lambdas[1]), np.dot(len(dados_treino[:2,dados_treino[-1,:] == classes[3]]), matrizes_de_covariancia[3])) + (np.dot((lambdas[1] * len(y_treino_Gauss)), matriz_de_covariancia_agregada))) / (((1 - lambdas[2]) * len(dados_treino[:2,dados_treino[-1,:] == classes[3]])) + (lambdas[1] * len(y_treino_Gauss))),
+        (np.dot((1 - lambdas[1]), np.dot(len(dados_treino[:2,dados_treino[-1,:] == classes[4]]), matrizes_de_covariancia[4])) + (np.dot((lambdas[1] * len(y_treino_Gauss)), matriz_de_covariancia_agregada))) / (((1 - lambdas[2]) * len(dados_treino[:2,dados_treino[-1,:] == classes[4]])) + (lambdas[1] * len(y_treino_Gauss))),
     ]
     matrizes_de_covariancia_050_inversas = [
         np.linalg.pinv(matrizes_de_covariancia_050[0]),
@@ -534,11 +542,11 @@ for rodada in range(rodadas):
     ]
     
     matrizes_de_covariancia_075 = [
-        (np.dot((1 - lambdas[2]), len(dados_treino[:2,dados_treino[-1,:] == classes[0]])) + (np.dot((lambdas[2] * len(y_treino_Gauss)), matriz_de_covariancia_agregada))) / (((1 - lambdas[2]) * len(dados_treino[:2,dados_treino[-1,:] == classes[0]])) + (lambdas[2] * len(y_treino_Gauss))),
-        (np.dot((1 - lambdas[2]), len(dados_treino[:2,dados_treino[-1,:] == classes[1]])) + (np.dot((lambdas[2] * len(y_treino_Gauss)), matriz_de_covariancia_agregada))) / (((1 - lambdas[2]) * len(dados_treino[:2,dados_treino[-1,:] == classes[1]])) + (lambdas[2] * len(y_treino_Gauss))),
-        (np.dot((1 - lambdas[2]), len(dados_treino[:2,dados_treino[-1,:] == classes[2]])) + (np.dot((lambdas[2] * len(y_treino_Gauss)), matriz_de_covariancia_agregada))) / (((1 - lambdas[2]) * len(dados_treino[:2,dados_treino[-1,:] == classes[2]])) + (lambdas[2] * len(y_treino_Gauss))),
-        (np.dot((1 - lambdas[2]), len(dados_treino[:2,dados_treino[-1,:] == classes[3]])) + (np.dot((lambdas[2] * len(y_treino_Gauss)), matriz_de_covariancia_agregada))) / (((1 - lambdas[2]) * len(dados_treino[:2,dados_treino[-1,:] == classes[3]])) + (lambdas[2] * len(y_treino_Gauss))),
-        (np.dot((1 - lambdas[2]), len(dados_treino[:2,dados_treino[-1,:] == classes[4]])) + (np.dot((lambdas[2] * len(y_treino_Gauss)), matriz_de_covariancia_agregada))) / (((1 - lambdas[2]) * len(dados_treino[:2,dados_treino[-1,:] == classes[4]])) + (lambdas[2] * len(y_treino_Gauss))),
+        (np.dot((1 - lambdas[2]), np.dot(len(dados_treino[:2,dados_treino[-1,:] == classes[0]]), matrizes_de_covariancia[0])) + (np.dot((lambdas[2] * len(y_treino_Gauss)), matriz_de_covariancia_agregada))) / (((1 - lambdas[2]) * len(dados_treino[:2,dados_treino[-1,:] == classes[0]])) + (lambdas[2] * len(y_treino_Gauss))),
+        (np.dot((1 - lambdas[2]), np.dot(len(dados_treino[:2,dados_treino[-1,:] == classes[1]]), matrizes_de_covariancia[1])) + (np.dot((lambdas[2] * len(y_treino_Gauss)), matriz_de_covariancia_agregada))) / (((1 - lambdas[2]) * len(dados_treino[:2,dados_treino[-1,:] == classes[1]])) + (lambdas[2] * len(y_treino_Gauss))),
+        (np.dot((1 - lambdas[2]), np.dot(len(dados_treino[:2,dados_treino[-1,:] == classes[2]]), matrizes_de_covariancia[2])) + (np.dot((lambdas[2] * len(y_treino_Gauss)), matriz_de_covariancia_agregada))) / (((1 - lambdas[2]) * len(dados_treino[:2,dados_treino[-1,:] == classes[2]])) + (lambdas[2] * len(y_treino_Gauss))),
+        (np.dot((1 - lambdas[2]), np.dot(len(dados_treino[:2,dados_treino[-1,:] == classes[3]]), matrizes_de_covariancia[3])) + (np.dot((lambdas[2] * len(y_treino_Gauss)), matriz_de_covariancia_agregada))) / (((1 - lambdas[2]) * len(dados_treino[:2,dados_treino[-1,:] == classes[3]])) + (lambdas[2] * len(y_treino_Gauss))),
+        (np.dot((1 - lambdas[2]), np.dot(len(dados_treino[:2,dados_treino[-1,:] == classes[4]]), matrizes_de_covariancia[4])) + (np.dot((lambdas[2] * len(y_treino_Gauss)), matriz_de_covariancia_agregada))) / (((1 - lambdas[2]) * len(dados_treino[:2,dados_treino[-1,:] == classes[4]])) + (lambdas[2] * len(y_treino_Gauss))),
     ]
     matrizes_de_covariancia_075_inversas = [
         np.linalg.pinv(matrizes_de_covariancia_075[0]),
